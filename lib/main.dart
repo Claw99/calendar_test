@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:calendar/screens/calendar_screen.dart';
 import 'package:calendar/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

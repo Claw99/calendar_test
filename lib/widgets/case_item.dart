@@ -53,21 +53,6 @@ class _CaseItemState extends State<CaseItem> {
                   Text(model.beginingTime!)
                 ],
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white),
-                  color: Colors.grey,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Image(
-                  width: 50,
-                  height: 50,
-                  image: NetworkImage(
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTDW7Yw7JWf3bSj-WqdUq4uikcXUUEFEaFpvd3qNHUJA&s'),
-                  fit: BoxFit.cover,
-                ),
-              ),
               IconButton(
                 onPressed: () {},
                 icon: const Icon(

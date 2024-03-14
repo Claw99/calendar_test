@@ -11,11 +11,6 @@ class CalendarView extends StatefulWidget {
 }
 
 class _CalendarViewState extends State<CalendarView> {
-  PageController _pageController =
-      PageController(initialPage: DateTime.now().month - 1);
-  DateTime _currentMonth = DateTime.now();
-  bool selectedcurrentyear = false;
-
   @override
   void initState() {
     super.initState();
@@ -23,7 +18,7 @@ class _CalendarViewState extends State<CalendarView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: CustomAppBar(title: 'Calendar'),
       body: Column(
         children: [

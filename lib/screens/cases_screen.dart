@@ -49,7 +49,7 @@ class _CaseScreenState extends State<CaseScreen> {
                             caseName: '${data[index]['name']}',
                           ),
                         )
-                      : Center(
+                      : const Center(
                           child: Text(
                             'You have no event yet',
                             style: TextStyle(fontSize: 20, color: Colors.black),
