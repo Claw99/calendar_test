@@ -6,11 +6,17 @@ import 'package:intl/intl.dart';
 import 'adding_case_dialog.dart';
 import 'years_picker.dart';
 
-class CalendarBuilder extends StatelessWidget {
+class CalendarBuilder extends StatefulWidget {
   const CalendarBuilder({
     super.key,
   });
 
+  @override
+  State<CalendarBuilder> createState() => _CalendarBuilderState();
+}
+
+class _CalendarBuilderState extends State<CalendarBuilder> {
+  DateTime _currentMonth = DateTime.now();
   @override
   Widget build(BuildContext context) {
     final List<String> days = [
@@ -24,8 +30,6 @@ class CalendarBuilder extends StatelessWidget {
     ];
     PageController _pageController =
         PageController(initialPage: DateTime.now().month - 1);
-
-    DateTime _currentMonth = DateTime.now();
 
     final Size size = MediaQuery.of(context).size;
 
@@ -56,6 +60,20 @@ class CalendarBuilder extends StatelessWidget {
             child: PageView.builder(
                 controller: _pageController,
                 itemCount: 12 * 5,
+                onPageChanged: (int index) {
+                  DateTime newMonth =
+                      DateTime(_currentMonth.year, (index % 12) + 1, 1);
+                  if (newMonth.isAfter(_currentMonth)) {
+                    setState(() {
+                      _currentMonth = _currentMonth.add(Duration(days: 30));
+                    });
+                  } else {
+                    setState(() {
+                      _currentMonth =
+                          _currentMonth.subtract(Duration(days: 30));
+                    });
+                  }
+                },
                 itemBuilder: (context, index) {
                   DateTime month =
                       DateTime(_currentMonth.year, (index % 12) + 1, 1);

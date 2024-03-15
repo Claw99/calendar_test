@@ -1,44 +1,41 @@
-import 'package:calendar/theme/theme.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
+import 'package:calendar/theme/theme.dart';
+
 class YearsPicker extends StatefulWidget {
-  final Function onYearChanged;
-  const YearsPicker({super.key, required this.onYearChanged});
+  final void Function(int?)? onChanged;
+  const YearsPicker({
+    Key? key,
+    this.onChanged,
+  }) : super(key: key);
 
   @override
-  State<YearsPicker> createState() => _MonthPickerState();
+  State<YearsPicker> createState() => _YearsPickerState();
 }
 
-class _MonthPickerState extends State<YearsPicker> {
+class _YearsPickerState extends State<YearsPicker> {
   String? selectedValue;
 
   int year = DateTime.now().year;
 
-  final List<int> years1 = [
-    2023,
-    2024,
-    2025,
-    2026,
-  ];
-  final List<String> yearsAsString = [];
-
   @override
   Widget build(BuildContext context) {
-    final List<String> yearsAsString =
-        years1.map((int year) => year.toString()).toList();
     return DropdownButtonHideUnderline(
-      child: DropdownButton2<String>(
+      child: DropdownButton2<int>(
+        onChanged: widget.onChanged,
+        value: year,
         isExpanded: true,
         hint: Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 4,
             ),
             Expanded(
               child: Text(
                 '$year',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.bold,
                 ),
@@ -47,26 +44,23 @@ class _MonthPickerState extends State<YearsPicker> {
             ),
           ],
         ),
-        items: yearsAsString
-            .map((String year) => DropdownMenuItem<String>(
-                  value: year,
-                  child: Text(
-                    year,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.visible,
-                  ),
-                ))
-            .toList(),
-        value: year.toString(),
-        onChanged: (value) {
-          setState(() {
-            year = int.parse(value!);
-          });
-        },
+        items: [
+          for (int year = DateTime.now().year;
+              year <= DateTime.now().year + 4;
+              year++)
+            DropdownMenuItem<int>(
+              value: year,
+              child: Text(
+                year.toString(),
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                overflow: TextOverflow.visible,
+              ),
+            )
+        ],
         buttonStyleData: ButtonStyleData(
           height: 50,
           width: MediaQuery.of(context).size.width / 4,
@@ -81,7 +75,7 @@ class _MonthPickerState extends State<YearsPicker> {
           elevation: 2,
         ),
         iconStyleData: IconStyleData(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_forward_ios_outlined,
           ),
           iconSize: 14,

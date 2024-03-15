@@ -44,7 +44,7 @@ class _CaseScreenState extends State<CaseScreen> {
                   return data.isNotEmpty
                       ? CaseItem(
                           model: CaseModel(
-                            beginingDay: DateTime.now(),
+                            beginingDay: '${data[index]['date']}',
                             beginingTime: '${data[index]['time']}',
                             caseName: '${data[index]['name']}',
                           ),

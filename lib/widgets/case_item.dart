@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../data/SQLite_helper.dart';
 import '../models/case_model.dart';
 
 class CaseItem extends StatefulWidget {
@@ -32,16 +33,11 @@ class _CaseItemState extends State<CaseItem> {
                   color: Theme.of(context).splashColor,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Column(
-                  children: [
-                    Text(
-                      model.beginingDay.day.toString(),
-                      style: const TextStyle(fontSize: 20),
-                    ),
-                    Text(
-                      DateFormat('MMM').format(model.beginingDay),
-                    ),
-                  ],
+                child: Center(
+                  child: Text(
+                    model.beginingDay,
+                    style: const TextStyle(fontSize: 20),
+                  ),
                 ),
               ),
               Column(
@@ -54,7 +50,10 @@ class _CaseItemState extends State<CaseItem> {
                 ],
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await SQLiteHelper().deleteData(model.caseName);
+                  setState(() {});
+                },
                 icon: const Icon(
                   Icons.delete_rounded,
                   size: 30,

@@ -32,13 +32,11 @@ class MonthBuilder extends StatefulWidget {
 }
 
 class _MonthBuilderState extends State<MonthBuilder> {
+  DateTime _currentMonth = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    int currentMonthIndex = DateTime.now().month - 1;
-    int currentMonthNumber = currentMonthIndex;
     PageController controller = widget.controller;
-    String monthString = Months.values[currentMonthNumber].name;
-    DateTime _currentMonth = DateTime.now();
+
     bool isLastMonthOfYear = _currentMonth.month == 12;
 
     return Container(
@@ -49,6 +47,9 @@ class _MonthBuilderState extends State<MonthBuilder> {
             padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: GestureDetector(
               onTap: () {
+                setState(() {
+                  _currentMonth = _currentMonth.subtract(Duration(days: 30));
+                });
                 if (controller.page! > 0) {
                   controller.previousPage(
                       duration: const Duration(milliseconds: 300),
@@ -64,18 +65,30 @@ class _MonthBuilderState extends State<MonthBuilder> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Text(
-              DateFormat('MMMM').format(_currentMonth),
+              '${DateFormat('MMMM').format(_currentMonth)}',
               style: TextStyle(fontSize: 20),
             ),
           ),
           YearsPicker(
-            onYearChanged: () {},
+            onChanged: (int? year) {
+              if (year != null) {
+                setState(() {
+                  _currentMonth = DateTime(year, 1, 1);
+
+                  int yearDiff = DateTime.now().year - year;
+                  int monthIndex = 12 * yearDiff + _currentMonth.month - 1;
+                  controller.jumpToPage(monthIndex);
+                });
+              }
+            },
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: GestureDetector(
               onTap: () {
-                _currentMonth = _currentMonth.subtract(Duration(days: 30));
+                setState(() {
+                  _currentMonth = _currentMonth.add(Duration(days: 30));
+                });
                 if (!isLastMonthOfYear) {
                   controller.nextPage(
                       duration: const Duration(milliseconds: 300),

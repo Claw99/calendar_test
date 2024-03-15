@@ -51,9 +51,23 @@ class SQLiteHelper {
   Future<void> insertData(
       String date, String caseName, String imagePath, String time) async {
     final db = await database;
+    try {
+      await db.transaction((txn) async {
+        await txn.insert(tableName,
+            {'date': date, 'name': caseName, 'image': imagePath, 'time': time});
+      });
+    } finally {
+      await db.close();
+    }
+  }
 
-    await db.insert(tableName,
-        {'date': date, 'name': caseName, 'image': imagePath, 'time': time});
+  Future<void> deleteData(String caseName) async {
+    final db = await database;
+    await db.delete(
+      tableName,
+      where: "name = ?",
+      whereArgs: [caseName],
+    );
   }
 
   Future<List<String>> getData() async {
